@@ -9,9 +9,7 @@ class Worker(QThread):
     finished = pyqtSignal()
 
     def run(self):
-        # Запуск функции в фоновом потоке
         Receive_and_process.main()
-        # Сообщить, что работа завершена
         self.finished.emit()
 
 class MainWindow(QMainWindow):
@@ -19,20 +17,20 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("PyQt App")
-        self.setFixedSize(638, 638)  # Устанавливаем фиксированный размер окна
+        self.setFixedSize(638, 638)  
 
-        # Установка фонового изображения
+
         background_label = QLabel(self)
         background_pixmap = QPixmap("gui_photo/back.png")
         background_label.setPixmap(background_pixmap)
         background_label.setScaledContents(True)
         background_label.setGeometry(0, 0, 638, 638)
         
-        # Создание кнопок меню
+
         self.menu = Menu(self)
         self.menu.create_buttons()
 
-        # Запуск Receive_and_process.main через QThread
+
         self.worker = Worker()
         self.worker.finished.connect(self.on_worker_finished)
         self.worker.start()
